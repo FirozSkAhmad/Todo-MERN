@@ -43,7 +43,7 @@ async function login(req, res) {
     });
 
     if (!user) {
-        return res.status(401).send({ status: false, message: "No user exists with the given EmailId" });
+        return res.status(401).send({ status: false, message: "No user exists with the given Email ID" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -56,22 +56,8 @@ async function login(req, res) {
 
         return res.status(200).send({ token });
     } else {
-        return res.status(401).send({ status: false, message: "Invalid password" });
-    }
-}
-//================================================GET USER=====================================
-async function getUser(req, res) {
-    try {
-        let decoded = req.headers.decodedToken;
-        console.log(decoded);
-
-        const email = decoded.email;
-        const user = await userModel.findOne({ email: email });
-
-        return res.status(200).send({ status: true, data: user });
-    } catch (err) {
-        res.status(500).send({ message: err.message });
+        return res.status(401).send({ status: false, message: "Incorrect password" });
     }
 }
 
-module.exports = { regiserUser, login, getUser };
+module.exports = { regiserUser, login };

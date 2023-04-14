@@ -13,7 +13,6 @@ const {
 
 router.post("/register", userController.regiserUser);
 router.post("/login", userController.login);
-router.get("/user", authorization, userController.getUser);
 router.get("/gettodo", authorization, getToDo);
 router.post("/save", authorization, addToDo);
 router.delete("/delete", authorization, deleteToDo);
