@@ -69,7 +69,7 @@ const Register = () => {
 
             if (Object.keys(errs).length === 0) {
                 const options = {
-                    url: "http://localhost:4000/register",
+                    url: `${process.env.REACT_APP_BASE_URL}/register`,
                     method: "POST",
                     data: formData
                 }

@@ -64,7 +64,7 @@ const Login = () => {
 
             if (Object.keys(errs).length === 0) {
                 const options = {
-                    url: "http://localhost:4000/login",
+                    url: `${process.env.REACT_APP_BASE_URL}/login`,
                     method: "POST",
                     data: formData
                 }
