@@ -39,9 +39,8 @@ async function addToDo(text, setText, setToDo) {
       }
 
       await axios(options)
-
-      toast.success("added todo sucessfully")
       getAllToDo(setToDo)
+      toast.success("added todo sucessfully")
       setText("")
     }
 
@@ -64,11 +63,11 @@ async function updateToDo(toDoId, text, setToDo, setText, setIsUpdating) {
 
     await axios(options)
 
-    toast.success("updated todo sucessfully")
-
     setText("");
     setIsUpdating(false);
     getAllToDo(setToDo);
+
+    toast.success("updated todo sucessfully")
   }
   catch (err) {
     console.log(err)
@@ -92,10 +91,8 @@ async function deleteToDo(_id, setToDo, isUpdating) {
       }
 
       await axios(options)
-
-      toast.success("deleted todo sucessfully")
-
       getAllToDo(setToDo);
+      toast.success("deleted todo sucessfully")
     }
   }
   catch (err) {
