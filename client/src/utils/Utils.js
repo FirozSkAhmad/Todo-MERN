@@ -25,7 +25,7 @@ async function addToDo(text, setText, setToDo) {
   try {
 
     if (text.length === 0) {
-      alert("Add some Todo before click on Add button")
+      toast.error("Add some Todo before click on Add button")
     }
     else {
       const options = {
@@ -38,6 +38,7 @@ async function addToDo(text, setText, setToDo) {
       }
 
       await axios(options)
+
       toast.success("added todo sucessfully")
       getAllToDo(setToDo)
       setText("")
@@ -77,7 +78,7 @@ async function deleteToDo(_id, setToDo, isUpdating) {
 
   try {
     if (isUpdating) {
-      alert("As you already clicked on the updata button, updata the todo before delete")
+      toast.error("As you already clicked on the update button, update the todo before delete")
     }
     else {
       const options = {

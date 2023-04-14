@@ -10,16 +10,15 @@ import { toast } from 'react-hot-toast'
 const Register = () => {
 
     const [formData, setFormData] = useState({
-        name: "", email: "", password: ""
+        name: "", email: "", password: "", tc: false
     })
 
     const [toggle, setToggel] = useState(true)
     const [errors, setErrors] = useState({})
-    const [serverErrors, setServerErrors] = useState({})
 
     const navigate = useNavigate();
 
-    function fromHandler(event) {
+    function formHandler(event) {
 
         const { name, value, type, checked } = event.target
 
@@ -42,7 +41,7 @@ const Register = () => {
         try {
             e.preventDefault();
 
-            const { name, email, password } = formData
+            const { name, email, password, tc } = formData
 
             const errs = {}
 
@@ -62,6 +61,10 @@ const Register = () => {
                 errs.password = `please fill the password column`
             }
 
+            if (!tc) {
+                errs.tc = `please mark terms and conditons field`
+            }
+
             setErrors(errs)
 
             if (Object.keys(errs).length === 0) {
@@ -70,7 +73,7 @@ const Register = () => {
                     method: "POST",
                     data: formData
                 }
-                
+
                 await axios(options)
 
                 toast.success("registered sucessfully")
@@ -79,9 +82,7 @@ const Register = () => {
             }
         }
         catch (err) {
-            const errs = {}
-            errs.message = err.response.data.message
-            setServerErrors(errs)
+            toast.error(err.response.data.message)
         }
     };
 
@@ -95,9 +96,9 @@ const Register = () => {
                     <input
                         type="text"
                         name="name"
-                        placeholder="Name"
+                        placeholder="Name*"
                         value={formData.name}
-                        onChange={fromHandler}
+                        onChange={formHandler}
                         className="input-field"
                     />
                     <div className="errBlock">
@@ -110,9 +111,9 @@ const Register = () => {
                     <input
                         type="email"
                         name="email"
-                        placeholder="Email"
+                        placeholder="Email*"
                         value={formData.email}
-                        onChange={fromHandler}
+                        onChange={formHandler}
                         className="input-field"
                     />
                     <div className="errBlock">
@@ -126,9 +127,9 @@ const Register = () => {
                         <input
                             type={toggle ? "password" : "text"}
                             name="password"
-                            placeholder="Password"
+                            placeholder="Password*"
                             value={formData.password}
-                            onChange={fromHandler}
+                            onChange={formHandler}
                             className="input-field"
                         />
                         <div id='icon' onClick={() => setToggel(!toggle)} >
@@ -140,8 +141,20 @@ const Register = () => {
                     </div>
                 </div>
 
-                <div className="serverErrBlock">
-                    {(serverErrors.message) ? <p> {serverErrors.message}</p> : ""}
+                <div className="inputField" id="tcBlockC">
+                    <label id="tcBlock">
+                        <input
+                            name="tc"
+                            value={formData.tc}
+                            onChange={formHandler}
+                            type="checkbox"
+                        />
+                        <p>*Accept all the terms&conditons</p>
+                    </label>
+
+                    <div className="errBlock">
+                        {(errors.tc) ? <p> {errors.tc}</p> : null}
+                    </div>
                 </div>
 
                 <button type="submit" className="reg-btn">

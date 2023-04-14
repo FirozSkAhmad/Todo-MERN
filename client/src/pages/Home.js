@@ -18,7 +18,7 @@ const Home = () => {
 
         localStorage.removeItem("token");
 
-        toast.success("logied out")
+        toast.success("logged out")
 
         navigate("/login");
     };

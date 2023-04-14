@@ -56,33 +56,26 @@ form .inputField {
 
 .inputField input {
   width: 100%;
-  padding: 10px ;
+  padding: 10px;
   border: none;
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
 }
 
-.errBlock > p {
+.errBlock>p {
   margin: 0;
   text-align: left;
   color: red;
   font-size: small;
 }
 
-.serverErrBlock > p {
-  margin: 0;
-  text-align: left;
-  color: red;
-  font-size: small;
-}
-
-#passwordField{
+#passwordField {
   display: flex;
   flex-direction: row;
 }
 
-#icon{
+#icon {
   height: 38px;
   width: 40px;
   border-radius: 5px;
@@ -93,7 +86,26 @@ form .inputField {
   align-items: center;
 }
 
-#icon:hover{
+#icon:hover {
+  cursor: pointer;
+}
+
+#tcBlockC{
+  height: 30px;
+}
+
+#tcBlock {
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  height: 20px;
+}
+
+#tcBlock>input {
+  width: 20px;
+}
+
+#tcBlock>input,#tcBlock:hover {
   cursor: pointer;
 }
 
@@ -191,7 +203,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s ;
+  transition: 0.3s;
 }
 
 button:hover {

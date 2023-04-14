@@ -16,7 +16,6 @@ const Login = () => {
     const [toggle, setToggel] = useState(true)
     const [formData, setFormData] = useState(initialData)
     const [errors, setErrors] = useState({})
-    const [serverErrors, setServerErrors] = useState({})
 
     const navigate = useNavigate()
 
@@ -72,8 +71,6 @@ const Login = () => {
 
                 const doc = await axios(options)
 
-                console.log(doc)
-
                 const token = doc.data.token
 
                 const tokenData = jwt_decode(token)
@@ -82,7 +79,7 @@ const Login = () => {
                 localStorage.setItem("userId", tokenData.userId);
                 localStorage.setItem("name", tokenData.name);
 
-                toast.success("logined sucessfully")
+                toast.success("Logged in successfully")
 
                 navigate("/")
 
@@ -90,9 +87,7 @@ const Login = () => {
             }
         }
         catch (err) {
-            const errs = {}
-            errs.message = err.response.data.message
-            setServerErrors(errs)
+            toast.error(err.response.data.message)
         }
     }
 
@@ -131,10 +126,6 @@ const Login = () => {
                         <div className="errBlock">
                             {(errors.password) ? <p> {errors.password}</p> : null}
                         </div>
-                    </div>
-
-                    <div className="serverErrBlock">
-                        {(serverErrors.message) ? <p> {serverErrors.message}</p> : ""}
                     </div>
 
                     <button type="submit" className="login-btn">
