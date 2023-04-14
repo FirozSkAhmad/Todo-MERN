@@ -39,7 +39,7 @@ async function addToDo(text, setText, setToDo) {
       }
 
       await axios(options)
-      getAllToDo(setToDo)
+      await getAllToDo(setToDo)
       toast.success("added todo sucessfully")
       setText("")
     }
