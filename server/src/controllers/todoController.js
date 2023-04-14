@@ -1,45 +1,58 @@
 const todoModel = require("../models/todoModel");
 
-module.exports.getToDo = async (req, res) => {
-  const token = req.headers.decodedToken;
+async function getToDo(req, res) {
+  try {
+    const token = req.headers.decodedToken;
 
-  const toDo = await todoModel.find({
-    user_id: token.user_id,
-  });
-  
-  res.status(200).send({ status: true, data: toDo });
+    const toDo = await todoModel.find({
+      user_id: token.user_id,
+    });
+
+    return res.status(200).send({ status: true, todoData: toDo })
+  }
+  catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
 };
 
-module.exports.saveToDo = async (req, res) => {
-  const { text } = req.body;
-  console.log(req.body);
-  const token = req.headers.decodedToken;
-  const data = { text: text, user_name: token.name, user_id: token.user_id };
-  todoModel.create(data).then((data) => {
-    console.log("added successfully");
-    res.send(data);
-  });
+async function addToDo(req, res) {
+  try {
+    const { text } = req.body;
+
+    const token = req.headers.decodedToken;
+
+    const data = { text: text, user_name: token.name, user_id: token.user_id };
+
+    const createdData = todoModel.create(data)
+
+    return res.status(201).send(createdData);
+  }
+  catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
+};
+async function deleteToDo(req, res) {
+  try {
+    const { _id } = req.body;
+
+    await todoModel.findByIdAndDelete({ _id })
+
+    return res.status(202).send({ msg: "deleted sucessfully" });
+  }
+  catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
 };
 
-module.exports.deleteToDo = async (req, res) => {
-  const { _id } = req.body;
-  console.log('=============================================================================')
-  console.log(req.body)
-  todoModel
-    .findByIdAndDelete({ _id: _id })
-    .then(() => {
-      res.send("deleted successfully");
-    })
-    .catch((err) => console.log(err));
+async function updateToDo(req, res) {
+  try {
+    const { text, toDoId } = req.body;
+    const updatedData = await todoModel.findByIdAndUpdate({ _id: toDoId }, { text: text }, { new: true })
+    return res.status(201).send({ msg: "updated sucessfully", updatedData });
+  }
+  catch (err) {
+    return res.status(500).send({ message: err.message });
+  }
 };
 
-module.exports.updateToDo = async (req, res) => {
-  const { text, toDoId } = req.body;
-  console.log(req.body);
-  todoModel
-    .findByIdAndUpdate({ _id: toDoId }, { text: text })
-    .then(() => {
-      res.send("updated successfully");
-    })
-    .catch((err) => console.log(err));
-};
+module.exports = { getToDo, addToDo, deleteToDo, updateToDo }

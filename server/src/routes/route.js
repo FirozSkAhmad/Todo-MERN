@@ -4,7 +4,7 @@ const userController = require("../controllers/userController");
 const { authorization } = require("../middlewares/auth");
 const {
   getToDo,
-  saveToDo,
+  addToDo,
   updateToDo,
   deleteToDo
 } = require("../controllers/todoController");
@@ -15,8 +15,8 @@ router.post("/register", userController.regiserUser);
 router.post("/login", userController.login);
 router.get("/user", authorization, userController.getUser);
 router.get("/gettodo", authorization, getToDo);
-router.post("/save", authorization, saveToDo);
-router.post("/delete", authorization, deleteToDo);
+router.post("/save", authorization, addToDo);
+router.delete("/delete", authorization, deleteToDo);
 router.put("/update", authorization, updateToDo);
 
 module.exports = router;
