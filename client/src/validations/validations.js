@@ -7,7 +7,7 @@ export const isValid = function (value) {
 };
 
 export const isValidEmail = function (data) {
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
     return emailRegex.test(data);
 };
 

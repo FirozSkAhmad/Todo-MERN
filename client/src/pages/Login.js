@@ -3,6 +3,9 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
 import { isValid, isValidEmail } from '../validations/validations'
+import NavBar from "../components/NavBar";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"
+import { toast } from 'react-hot-toast'
 
 const Login = () => {
 
@@ -18,6 +21,7 @@ const Login = () => {
     const navigate = useNavigate()
 
     function formHandler(event) {
+
         const { name, value, type, checked } = event.target
 
         setFormData((preState) => {
@@ -61,51 +65,85 @@ const Login = () => {
 
             if (Object.keys(errs).length === 0) {
                 const options = {
-                    url: "http://localhost:4000/loginUser",
+                    url: "http://localhost:4000/login",
                     method: "POST",
                     data: formData
                 }
 
                 const doc = await axios(options)
+
                 console.log(doc)
+
                 const token = doc.data.token
+
                 const tokenData = jwt_decode(token)
 
                 localStorage.setItem("token", token);
                 localStorage.setItem("userId", tokenData.userId);
                 localStorage.setItem("name", tokenData.name);
 
+                toast.success("logined sucessfully")
+
                 navigate("/")
+
                 setFormData(initialData)
             }
         }
         catch (err) {
             const errs = {}
-            errs.message = err.response.data.msg
+            errs.message = err.response.data.message
             setServerErrors(errs)
         }
     }
 
     return (
-        <div className="login-container">
-            <form onSubmit={submitHandler}>
-                <input
-                    value={formData.email}
-                    onChange={formHandler}
-                    type="email"
-                    placeholder="Email"
-                />
-                <br />
-                <input
-                    value={formData.password}
-                    onChange={formHandler}
-                    type="password"
-                    placeholder="Password"
-                />
-                <br />
-                <input type="submit" value="Login" />
-            </form>
-        </div>
+        <>
+            <NavBar />
+            <div className="login-container">
+                <form onSubmit={submitHandler}>
+
+                    <div className="inputField">
+                        <input
+                            name="email"
+                            value={formData.email}
+                            onChange={formHandler}
+                            type="email"
+                            placeholder="Email"
+                        />
+                        <div className="errBlock">
+                            {(errors.email) ? <p> {errors.email}</p> : null}
+                        </div>
+                    </div>
+
+                    <div className="inputField">
+                        <div id="passwordField">
+                            <input
+                                name="password"
+                                value={formData.password}
+                                onChange={formHandler}
+                                type={toggle ? "password" : "text"}
+                                placeholder="Password"
+                            />
+                            <div id='icon' onClick={() => setToggel(!toggle)} >
+                                {toggle ? <AiFillEye /> : <AiFillEyeInvisible />}
+                            </div>
+                        </div>
+                        <div className="errBlock">
+                            {(errors.password) ? <p> {errors.password}</p> : null}
+                        </div>
+                    </div>
+
+                    <div className="serverErrBlock">
+                        {(serverErrors.message) ? <p> {serverErrors.message}</p> : ""}
+                    </div>
+
+                    <button type="submit" className="login-btn">
+                        Login
+                    </button>
+
+                </form>
+            </div>
+        </>
     )
 }
 

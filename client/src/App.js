@@ -1,22 +1,17 @@
 import { Routes, Route } from "react-router-dom";
 import './App.css';
-import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import ProtectedRoutes from "./components/ProtectedRoutes";
+import { ProtectedRoute, ProtectedRouteIn } from "./components/ProtectedRoutes";
 
 function App() {
   return (
     <div>
-      <NavBar />
       <Routes>
-        <Route path="/" element={<ProtectedRoutes Cmp={Home} />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {/* <Route path="/dashboard" element={<ProtectedRoutes />}>
-          <Route path="/dashboard" element={<Welcome />} />
-        </Route> */}
+        <Route path="/" element={<ProtectedRoute Cmp={Home} />} />
+        <Route path="/login" element={<ProtectedRouteIn Cmp={Login} />} />
+        <Route path="/register" element={<ProtectedRouteIn Cmp={Register} />} />
       </Routes>
     </div>
   );

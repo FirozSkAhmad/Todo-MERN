@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoutes = (props) => {
+const ProtectedRoute = (props) => {
 
     const { Cmp } = props
 
@@ -10,4 +10,14 @@ const ProtectedRoutes = (props) => {
 
 }
 
-export default ProtectedRoutes
+const ProtectedRouteIn = (props) => {
+
+    const { Cmp } = props
+
+    const auth = localStorage.getItem("token");
+
+    return auth ? <Navigate to="/" /> : <Cmp />;
+
+}
+
+export { ProtectedRoute, ProtectedRouteIn } 

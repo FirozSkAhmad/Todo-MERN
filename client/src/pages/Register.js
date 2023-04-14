@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// axios.defaults.baseURL = "http://localhost:4000";
 import { isValid, isValidEmail } from '../validations/validations'
+import NavBar from "../components/NavBar";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"
+import { toast } from 'react-hot-toast'
+
 
 const Register = () => {
 
@@ -44,7 +47,7 @@ const Register = () => {
             const errs = {}
 
             if (!isValid(name)) {
-                errs.fname = `please fill the First Name column`
+                errs.name = `please fill the Name column`
             }
 
             if (!isValid(email)) {
@@ -62,77 +65,92 @@ const Register = () => {
             setErrors(errs)
 
             if (Object.keys(errs).length === 0) {
-            const options = {
-                url: "http://localhost:4000/register",
-                method: "POST",
-                data: formData
+                const options = {
+                    url: "http://localhost:4000/register",
+                    method: "POST",
+                    data: formData
+                }
+                
+                await axios(options)
+
+                toast.success("registered sucessfully")
+
+                navigate("/login")
             }
-            const doc = await axios(options)
-            console.log(doc)
-
-            navigate("/login")
-        }
-            // const response = await fetch("http://localhost:4000/register", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({
-            //         name,
-            //         email,
-            //         password,
-            //     }),
-            // });
-
-            // const data = await response.json();
-
-            // if (data.status) {
-            //     alert(data.message);
-            //     Navigate("/login");
-            // } else {
-            //     alert(data.message);
-            //     Navigate("/register");
-            // }
         }
         catch (err) {
             const errs = {}
-            errs.message = err.response.data.msg
+            errs.message = err.response.data.message
             setServerErrors(errs)
         }
     };
 
-    return (
+    return (<>
+        <NavBar />
         <div className="container">
+
             <form className="register-form" onSubmit={registerUser}>
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    value={formData.name}
-                    onChange={fromHandler}
-                    className="input-field"
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={fromHandler}
-                    className="input-field"
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={fromHandler}
-                    className="input-field"
-                />
-                <button type="submit" className="submit-btn">
+
+                <div className="inputField">
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Name"
+                        value={formData.name}
+                        onChange={fromHandler}
+                        className="input-field"
+                    />
+                    <div className="errBlock">
+                        {(errors.name) ? <p> {errors.name}</p> : null}
+                    </div>
+                </div>
+
+
+                <div className="inputField">
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={fromHandler}
+                        className="input-field"
+                    />
+                    <div className="errBlock">
+
+                        {(errors.email) ? <p> {errors.email}</p> : null}
+                    </div>
+                </div>
+
+                <div className="inputField" >
+                    <div id="passwordField">
+                        <input
+                            type={toggle ? "password" : "text"}
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={fromHandler}
+                            className="input-field"
+                        />
+                        <div id='icon' onClick={() => setToggel(!toggle)} >
+                            {toggle ? <AiFillEye /> : <AiFillEyeInvisible />}
+                        </div>
+                    </div>
+                    <div className="errBlock">
+                        {(errors.password) ? <p> {errors.password}</p> : null}
+                    </div>
+                </div>
+
+                <div className="serverErrBlock">
+                    {(serverErrors.message) ? <p> {serverErrors.message}</p> : ""}
+                </div>
+
+                <button type="submit" className="reg-btn">
                     Register
                 </button>
+
             </form>
         </div>
+    </>
     )
 }
 
