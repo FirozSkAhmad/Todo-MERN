@@ -1,4 +1,3 @@
-// const { text } = require("express");
 const jwt = require("jsonwebtoken");
 
 const authorization = async (req, res, next) => {
