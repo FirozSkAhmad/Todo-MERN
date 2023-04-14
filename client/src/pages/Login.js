@@ -1,48 +1,104 @@
 import { useState } from "react";
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
+import { isValid, isValidEmail } from '../validations/validations'
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
 
-    async function loginUser(event) {
-        event.preventDefault();
-        const response = await fetch("http://localhost:4000/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            }),
-        });
+    const initialData = {
+        email: "", password: ""
+    }
 
-        const data = await response.json();
-        console.log(data);
+    const [toggle, setToggel] = useState(true)
+    const [formData, setFormData] = useState(initialData)
+    const [errors, setErrors] = useState({})
+    const [serverErrors, setServerErrors] = useState({})
 
-        if (data.data) {
-            localStorage.setItem("token", data.data);
-            localStorage.setItem("name", data.user);
-            alert("Login successful");
-            window.location.href = "/dashboard";
-        } else {
-            alert("Please check your username and password");
+    const navigate = useNavigate()
+
+    function formHandler(event) {
+        const { name, value, type, checked } = event.target
+
+        setFormData((preState) => {
+            return {
+                ...preState,
+                [name]: type === "checkbox" ? checked : value
+            }
+        })
+
+        setErrors(((preState) => {
+            return {
+                ...preState,
+                [name]: ""
+            }
+        }))
+    }
+
+    async function submitHandler(event) {
+        try {
+            event.preventDefault()
+
+            const { email, password } = formData
+
+            const credentials = { email, password }
+
+            const errs = {}
+
+            if (!isValid(credentials.email)) {
+                errs.email = `please fill the email column`
+            } else {
+                if (!isValidEmail(credentials.email)) {
+                    errs.email = `invalid emailId`
+                }
+            }
+
+            if (!isValid(credentials.password)) {
+                errs.password = `please fill the password column`
+            }
+
+            setErrors(errs)
+
+            if (Object.keys(errs).length === 0) {
+                const options = {
+                    url: "http://localhost:4000/loginUser",
+                    method: "POST",
+                    data: formData
+                }
+
+                const doc = await axios(options)
+                console.log(doc)
+                const token = doc.data.token
+                const tokenData = jwt_decode(token)
+
+                localStorage.setItem("token", token);
+                localStorage.setItem("userId", tokenData.userId);
+                localStorage.setItem("name", tokenData.name);
+
+                navigate("/")
+                setFormData(initialData)
+            }
+        }
+        catch (err) {
+            const errs = {}
+            errs.message = err.response.data.msg
+            setServerErrors(errs)
         }
     }
 
     return (
         <div className="login-container">
-            <form onSubmit={loginUser}>
+            <form onSubmit={submitHandler}>
                 <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={formData.email}
+                    onChange={formHandler}
                     type="email"
                     placeholder="Email"
                 />
                 <br />
                 <input
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formData.password}
+                    onChange={formHandler}
                     type="password"
                     placeholder="Password"
                 />

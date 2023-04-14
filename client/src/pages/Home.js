@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Todo from '../components/Todo';
 import { addToDo, getAllToDo, updateToDo, deleteToDo } from "../utils/Utils";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
     const [toDo, setToDo] = useState([]);
@@ -16,7 +14,7 @@ const Home = () => {
 
     const handleLogOut = () => {
         localStorage.removeItem("token");
-        navigate("/");
+        navigate("/login");
     };
 
     useEffect(() => {
@@ -67,7 +65,6 @@ const Home = () => {
                 </div>
                 <button onClick={handleLogOut}>Log Out</button>
             </div>
-            <ToastContainer />
         </div>
     )
 }

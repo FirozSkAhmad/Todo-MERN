@@ -114,7 +114,7 @@ const Register = () => {
                 />
                 <input
                     type="email"
-                    name="name"
+                    name="email"
                     placeholder="Email"
                     value={formData.email}
                     onChange={fromHandler}
@@ -122,7 +122,7 @@ const Register = () => {
                 />
                 <input
                     type="password"
-                    name="name"
+                    name="password"
                     placeholder="Password"
                     value={formData.password}
                     onChange={fromHandler}
