@@ -65,7 +65,7 @@ async function updateToDo(toDoId, text, setToDo, setText, setIsUpdating) {
 
     setText("");
     setIsUpdating(false);
-    getAllToDo(setToDo);
+    await getAllToDo(setToDo);
 
     toast.success("updated todo sucessfully")
   }
@@ -91,7 +91,7 @@ async function deleteToDo(_id, setToDo, isUpdating) {
       }
 
       await axios(options)
-      getAllToDo(setToDo);
+      await getAllToDo(setToDo);
       toast.success("deleted todo sucessfully")
     }
   }
