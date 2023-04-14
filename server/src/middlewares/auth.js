@@ -1,31 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-// const authorization = async (req, res, next) => {
-//   try {
-//     let token = req.headers.authorization;
-
-//     if (!token)
-//       return res
-//         .status(400)
-//         .send({ status: false, msg: "token must be present" });
-
-//     jwt.verify(token, "secret123", (err, decodedToken) => {
-
-//       if (err) {
-//         return res.status(401).send({ status: false, message: err.message });
-//       }
-
-//       req.headers.decodedToken = decodedToken;
-
-//       next();
-//     });
-//   } catch (err) {
-//     return res.status(500).send({ status: false, message: err.message });
-//   }
-// };
-
-// const jwt = require('jsonwebtoken')
-
 
 async function authentication(req, res, next) {
   try {
@@ -50,7 +24,7 @@ async function authorization(req, res, next) {
   try {
     const data = req.body
     const userId = data.userId
-    const rUserId = req.userId
+    const rUserId = req.headers.decodedToken.user_id
     if (userId == rUserId) {
       next()
     }
