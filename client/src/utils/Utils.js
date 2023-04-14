@@ -13,7 +13,6 @@ async function getAllToDo(setToDo) {
       headers: {
         authorization: `${token}`,
       },
-      data: { userId }
     }
     const docs = await axios(options)
     setToDo(docs.data.todoData)
