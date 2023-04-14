@@ -1,6 +1,7 @@
 import axios from "axios";
 import { toast } from 'react-hot-toast'
 const token = localStorage.getItem("token");
+const userId = localStorage.getItem("userId");
 
 const baseUrl = `${process.env.REACT_APP_BASE_URL}`;
 
@@ -12,6 +13,7 @@ async function getAllToDo(setToDo) {
       headers: {
         authorization: `${token}`,
       },
+      data: { userId }
     }
     const docs = await axios(options)
     setToDo(docs.data.todoData)
@@ -34,7 +36,7 @@ async function addToDo(text, setText, setToDo) {
         headers: {
           authorization: `${token}`,
         },
-        data: { text }
+        data: { userId, text }
       }
 
       await axios(options)
@@ -58,7 +60,7 @@ async function updateToDo(toDoId, text, setToDo, setText, setIsUpdating) {
       headers: {
         authorization: `${token}`,
       },
-      data: { toDoId, text }
+      data: { userId, toDoId, text }
     }
 
     await axios(options)
@@ -87,7 +89,7 @@ async function deleteToDo(_id, setToDo, isUpdating) {
         headers: {
           authorization: `${token}`,
         },
-        data: { _id }
+        data: { userId, _id }
       }
 
       await axios(options)
