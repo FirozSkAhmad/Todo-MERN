@@ -22,8 +22,10 @@ async function authentication(req, res, next) {
 async function authorization(req, res, next) {
   try {
     const { userId } = req.body
+
     const rUserId = req.headers.decodedToken.user_id
-    if (userId == rUserId) {
+
+    if (userId === rUserId) {
       next()
     }
     else {
