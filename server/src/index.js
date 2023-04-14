@@ -24,4 +24,4 @@ mongoose
 
 app.use("/", route);
 
-app.listen(PORT, () => console.log("server running on port 4000"));
+app.listen(PORT, () => console.log("server running on port" + PORT));
