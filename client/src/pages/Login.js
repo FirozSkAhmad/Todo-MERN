@@ -76,7 +76,7 @@ const Login = () => {
                 const tokenData = jwt_decode(token)
 
                 localStorage.setItem("token", token);
-                localStorage.setItem("userId", tokenData.userId);
+                localStorage.setItem("userId", tokenData.user_id);
                 localStorage.setItem("name", tokenData.name);
 
                 toast.success("Logged in successfully")
