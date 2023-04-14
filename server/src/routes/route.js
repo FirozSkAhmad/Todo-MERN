@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
-const { authorization } = require("../middlewares/auth");
+const { authentication, authorization } = require("../middlewares/auth");
 const {
   getToDo,
   addToDo,
@@ -13,9 +13,9 @@ const {
 
 router.post("/register", userController.regiserUser);
 router.post("/login", userController.login);
-router.get("/gettodo", authorization, getToDo);
-router.post("/save", authorization, addToDo);
-router.delete("/delete", authorization, deleteToDo);
-router.put("/update", authorization, updateToDo);
+router.get("/gettodo", authentication, authorization, getToDo);
+router.post("/save", authentication, authorization, addToDo);
+router.delete("/delete", authentication, authorization, deleteToDo);
+router.put("/update", authentication, authorization, updateToDo);
 
 module.exports = router;
