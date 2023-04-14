@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-
 async function authentication(req, res, next) {
   try {
     const token = req.header('Authorization').replace("Bearer ", "")
@@ -22,8 +21,7 @@ async function authentication(req, res, next) {
 
 async function authorization(req, res, next) {
   try {
-    const data = req.body
-    const userId = data.userId
+    const { userId } = req.body
     const rUserId = req.headers.decodedToken.user_id
     if (userId == rUserId) {
       next()
@@ -38,5 +36,3 @@ async function authorization(req, res, next) {
 }
 
 module.exports = { authentication, authorization }
-
-// module.exports = { authorization };
