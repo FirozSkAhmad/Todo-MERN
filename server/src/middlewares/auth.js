@@ -29,7 +29,7 @@ async function authorization(req, res, next) {
       next()
     }
     else {
-      res.status(403).send({ msg: "user not authorized" })
+      res.status(403).send({ msg: "user not authorized", userId, rUserId })
     }
   }
   catch (err) {
